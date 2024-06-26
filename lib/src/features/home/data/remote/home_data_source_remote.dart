@@ -1,26 +1,23 @@
 import 'dart:convert';
-
-import 'package:financialexpress/shared/domain/models/category_wise_news_response.dart';
-
 import '../../../../core/shared/data/remote/remote.dart';
 import '../../../../core/shared/domain/models/either.dart';
 
 import '../../../../core/shared/exceptions/app_exceptions.dart';
-import '../../domain/model/product_list_response.dart';
+import '../../domain/model/product_list_response/product_list_response.dart';
 
-abstract class CategoryWiseNewsDataSource {
-  Future<Either<AppException, ProductListResponse>> fetchCategoryWiseNews(
+abstract class ProductDataSource {
+  Future<Either<AppException, ProductListResponse>> fetchProducts(
       {String local = "en", required String category});
   // Future<Either<AppException, PaginatedResponse>> searchPaginatedProducts(
   //     {required int skip, required String query});
 }
 
-class SliderRemoteDataSource extends ProductListResponse {
+class ProductDataSourceImpl extends ProductDataSource {
   final NetworkService networkService;
-  SliderRemoteDataSource(this.networkService);
+  ProductDataSourceImpl(this.networkService);
 
   @override
-  Future<Either<AppException, ProductListResponse>> fetchCategoryWiseNews(
+  Future<Either<AppException, ProductListResponse>> fetchProducts(
       {String local = "en", required String category}) async {
     final response = await networkService.get(
       '$local/home/$category',
