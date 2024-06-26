@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:batter_high/src/features/home/domain/model/product_list_response/datum.dart';
+import 'package:batter_high/src/features/home/domain/model/product_list_response/product.dart';
 import 'package:batter_high/src/features/home/presentation/providers/product/product_state_provider.dart';
 import 'package:batter_high/src/features/home/presentation/providers/product/state/product_state.dart';
 import 'package:go_router/go_router.dart';
@@ -70,31 +70,34 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
             ))
           : state.hasData
               ? SizedBox(
+                  height: 600,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.separated(
+                    // shrinkWrap: true,
                     itemBuilder: (ctx, i) {
-                      return ListTile(
-                        dense: false,
-                        visualDensity: VisualDensity.compact,
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 0, horizontal: 8),
-                        onTap: () async {
-                          print(state.productResp.data?[i].name);
+                      print(i);
+                      return ProductCard(
+                          news: state.productResp.data!.products![i]);
+                      // return ListTile(
+                      //   dense: false,
+                      //   visualDensity: VisualDensity.compact,
+                      //   contentPadding: const EdgeInsets.symmetric(
+                      //       vertical: 0, horizontal: 8),
+                      //   onTap: () async {
+                      //     print(state.productResp.data?.products?[i].name);
 
-                          // print(GoRouterState.of(context).matchedLocation);
-                          // Navigator.of(ctx).pop();
-                          Navigator.of(context).pop();
-                          context.push(
-                              "/category/${state.productResp.data?[i].name?.toLowerCase().replaceAll(" ", "-") ?? ""}");
-                        },
-                        trailing: const Icon(Icons.chevron_right_outlined),
-                        title: Text(state.productResp.data?[i].name ?? ""),
-                      );
+                      //     // print(GoRouterState.of(context).matchedLocation);
+                      //     // Navigator.of(ctx).pop();
+                      //   },
+                      //   trailing: const Icon(Icons.chevron_right_outlined),
+                      //   title: Text(
+                      //       state.productResp.data?.products?[i].name ?? ""),
+                      // );
                     },
                     separatorBuilder: (context, index) => const Divider(
                       thickness: .05,
                     ),
-                    itemCount: state.productResp.data?.length ?? 0,
+                    itemCount: state.productResp.data?.products?.length ?? 0,
                   ))
               : Center(
                   child: Padding(
@@ -126,7 +129,7 @@ class ProductCard extends StatelessWidget {
     required this.news,
   });
 
-  final Datum news;
+  final Product news;
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +140,12 @@ class ProductCard extends StatelessWidget {
           if (news.image?.isNotEmpty == true)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Image(image: NetworkImage(news.image ?? "")),
+              child: Image(
+                image: NetworkImage(news.image ?? ""),
+                errorBuilder: (context, error, stackTrace) {
+                  return Container();
+                },
+              ),
             ),
           Padding(
             padding: const EdgeInsets.only(left: 16, top: 8),
@@ -145,23 +153,15 @@ class ProductCard extends StatelessWidget {
               style: const TextStyle(color: Colors.red),
               child: Row(
                 children: [
-                  Text(
-                    (news.name ?? "").toUpperCase(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.red),
+                  Flexible(
+                    child: Text(
+                      (news.name ?? "").toUpperCase(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.bold, color: Colors.red),
+                    ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 7),
-                    height: 16,
-                    width: 2,
-                    color: Colors.red,
-                  ),
-                  // if (news.datetime != null)
-                  //   Text(
-                  //     unixToYMDH(news.datetime!.millisecondsSinceEpoch ~/ 1000),
-                  //     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  //         fontWeight: FontWeight.bold, color: AppColors.error),
-                  //   ),
                 ],
               ),
             ),

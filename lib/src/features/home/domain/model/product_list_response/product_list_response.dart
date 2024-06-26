@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import 'datum.dart';
+import 'data.dart';
 
 part 'product_list_response.g.dart';
 
@@ -10,7 +10,7 @@ class ProductListResponse extends Equatable {
   final bool? success;
   final int? statusCode;
   final String? message;
-  final List<Datum>? data;
+  final Data? data;
 
   const ProductListResponse({
     this.success,
@@ -29,7 +29,7 @@ class ProductListResponse extends Equatable {
     bool? success,
     int? statusCode,
     String? message,
-    List<Datum>? data,
+    Data? data,
   }) {
     return ProductListResponse(
       success: success ?? this.success,

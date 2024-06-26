@@ -69,6 +69,7 @@ class DioNetworkService extends NetworkService with ExceptionHandlerMixin {
       ),
       endpoint: endpoint,
     );
+    print("calling");
     return res;
   }
 }

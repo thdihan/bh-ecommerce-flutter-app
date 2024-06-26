@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'datum.g.dart';
+part 'product.g.dart';
 
 @JsonSerializable()
-class Datum extends Equatable {
+class Product extends Equatable {
   @JsonKey(name: '_id')
   final String? id;
   final String? productCode;
@@ -14,12 +14,12 @@ class Datum extends Equatable {
   final String? description;
   final String? image;
   final List<String>? categories;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
   @JsonKey(name: '__v')
   final int? v;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
-  const Datum({
+  const Product({
     this.id,
     this.productCode,
     this.name,
@@ -28,16 +28,18 @@ class Datum extends Equatable {
     this.description,
     this.image,
     this.categories,
+    this.v,
     this.createdAt,
     this.updatedAt,
-    this.v,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => _$DatumFromJson(json);
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return _$ProductFromJson(json);
+  }
 
-  Map<String, dynamic> toJson() => _$DatumToJson(this);
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 
-  Datum copyWith({
+  Product copyWith({
     String? id,
     String? productCode,
     String? name,
@@ -46,11 +48,11 @@ class Datum extends Equatable {
     String? description,
     String? image,
     List<String>? categories,
+    int? v,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? v,
   }) {
-    return Datum(
+    return Product(
       id: id ?? this.id,
       productCode: productCode ?? this.productCode,
       name: name ?? this.name,
@@ -59,9 +61,9 @@ class Datum extends Equatable {
       description: description ?? this.description,
       image: image ?? this.image,
       categories: categories ?? this.categories,
+      v: v ?? this.v,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      v: v ?? this.v,
     );
   }
 
@@ -79,9 +81,9 @@ class Datum extends Equatable {
       description,
       image,
       categories,
+      v,
       createdAt,
       updatedAt,
-      v,
     ];
   }
 }

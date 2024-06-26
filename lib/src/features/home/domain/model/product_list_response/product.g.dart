@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'datum.dart';
+part of 'product.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
+Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       id: json['_id'] as String?,
       productCode: json['productCode'] as String?,
       name: json['name'] as String?,
@@ -17,16 +17,16 @@ Datum _$DatumFromJson(Map<String, dynamic> json) => Datum(
       categories: (json['categories'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      v: (json['__v'] as num?)?.toInt(),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
-      v: (json['__v'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
+Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       '_id': instance.id,
       'productCode': instance.productCode,
       'name': instance.name,
@@ -35,7 +35,7 @@ Map<String, dynamic> _$DatumToJson(Datum instance) => <String, dynamic>{
       'description': instance.description,
       'image': instance.image,
       'categories': instance.categories,
+      '__v': instance.v,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
-      '__v': instance.v,
     };

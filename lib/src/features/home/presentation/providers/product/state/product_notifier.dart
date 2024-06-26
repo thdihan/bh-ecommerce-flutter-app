@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:batter_high/src/core/shared/domain/models/product_response.dart';
 import 'package:batter_high/src/features/home/domain/repositories/product_repository.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
       state.status != ProductStatus.loading &&
       state.status != ProductStatus.fetchingMore;
 
-  Future<void> fetchCategoryWiseNews({required String category}) async {
+  Future<void> fetchProducts({required String category}) async {
     state = state.copyWith(
       status: ProductStatus.loading,
       isLoading: true,
@@ -57,7 +58,7 @@ class ProductNotifier extends StateNotifier<ProductState> {
   // }
 
   void updateStateFromResponse(
-      Either<AppException, ProductListResponse> response) {
+      Either<AppException, ProductResponse<dynamic>> response) {
     response.fold((failure) {
       state = state.copyWith(
         status: ProductStatus.failure,
@@ -65,13 +66,15 @@ class ProductNotifier extends StateNotifier<ProductState> {
         isLoading: false,
       );
     }, (data) {
-      final categoryResponse =
+      print(data.data);
+      final productResp =
           ProductListResponse.fromJson(jsonDecode(jsonEncode(data.data)));
 
       // final totalColumnNews = [...state.posts, ...postList];
+      print(productResp);
 
       state = state.copyWith(
-        productResp: categoryResponse,
+        productResp: productResp,
         status: ProductStatus.loaded,
         hasData: true,
         // message: totalColumnNews.isEmpty ? 'No products found' : '',

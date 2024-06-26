@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final productDataSourceProvider =
     Provider.family<ProductDataSource, NetworkService>(
-  (_, networkService) => SliderRemoteDataSource(networkService),
+  (_, networkService) => ProductRemoteDataSource(networkService),
 );
 
 final productRepositoryProvider = Provider<ProductRepository>((ref) {

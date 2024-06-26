@@ -6,7 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final productNotifierProvider =
     StateNotifierProvider<ProductNotifier, ProductState>((ref) {
   final repository = ref.watch(productRepositoryProvider);
-  return ProductNotifier(repository);
+  print("step 1");
+  return ProductNotifier(repository)..fetchProducts(category: "category");
 });
 // final categoryEconomyNotifierProvider =
 //     StateNotifierProvider<CategoryWiseNewsNotifier, CategoryWiseNewsState>(

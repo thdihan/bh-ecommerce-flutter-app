@@ -1,3 +1,3 @@
 class AppConfigs {
-  static String baseUrl = 'https://bh-ecommerce.vercel.app/';
+  static String baseUrl = 'https://bh-ecommerce.vercel.app/api/';
 }
