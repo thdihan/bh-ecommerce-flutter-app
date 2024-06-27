@@ -6,8 +6,6 @@ import '../../../../core/shared/domain/models/either.dart';
 import '../../../../core/shared/domain/models/product_response.dart';
 import '../../../../core/shared/exceptions/app_exceptions.dart';
 
-import '../../domain/model/product_list_response/product_list_response.dart';
-
 abstract class ProductDataSource {
   Future<Either<AppException, ProductResponse>> fetchProducts(
       {String local = "en", required String category});

@@ -1,8 +1,6 @@
-import 'package:batter_high/main.dart';
 import 'package:flutter/material.dart';
 
 import 'core/config/router.dart';
-import 'features/home/presentation/pages/home.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

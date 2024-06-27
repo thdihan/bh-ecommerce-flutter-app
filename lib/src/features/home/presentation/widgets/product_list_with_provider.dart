@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:batter_high/src/features/home/domain/model/product_list_response/product.dart';
 import 'package:batter_high/src/features/home/presentation/providers/product/product_state_provider.dart';
 import 'package:batter_high/src/features/home/presentation/providers/product/state/product_state.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
