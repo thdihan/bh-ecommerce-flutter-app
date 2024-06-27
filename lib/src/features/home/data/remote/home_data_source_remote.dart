@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:batter_high/src/core/shared/domain/models/category_response.dart';
+
 import '../../../../core/shared/data/remote/remote.dart';
 import '../../../../core/shared/domain/models/either.dart';
 
@@ -80,4 +82,47 @@ class ProductRemoteDataSource extends ProductDataSource {
   //     },
   //   );
   // }
+}
+
+abstract class CategoryDataSource {
+  Future<Either<AppException, CategoryResponse>> fetchProducts(
+      {String local = "en", required String category});
+  // Future<Either<AppException, PaginatedResponse>> searchPaginatedProducts(
+  //     {required int skip, required String query});
+}
+
+class CategoryRemoteDataSource extends CategoryDataSource {
+  final NetworkService networkService;
+  CategoryRemoteDataSource(this.networkService);
+
+  @override
+  Future<Either<AppException, CategoryResponse>> fetchProducts(
+      {String local = "en", required String category}) async {
+    final response = await networkService.get(
+      'category/get-all-categories',
+    );
+
+    return response.fold(
+      (l) => Left(l),
+      (r) {
+        final jsonData = r.data;
+        if (jsonData == null) {
+          return Left(
+            AppException(
+              identifier: 'fetchPaginatedData',
+              statusCode: 0,
+              message: 'The data is not in the valid format',
+            ),
+          );
+        }
+
+        print("########################");
+        print(r.data);
+
+        final paginatedResponse = CategoryResponse.fromJson(
+            jsonData, jsonDecode(jsonEncode(jsonData)));
+        return Right(paginatedResponse);
+      },
+    );
+  }
 }

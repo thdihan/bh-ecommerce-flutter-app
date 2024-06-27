@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../domain/model/product_list_response/product_list_response.dart';
+import '../../../../domain/model/category_list_response/category_list_response.dart';
 
-enum ProductStatus {
+enum CategoryStatus {
   initial,
   loading,
   loaded,
@@ -11,46 +11,46 @@ enum ProductStatus {
   fetchedAllProducts
 }
 
-class ProductState extends Equatable {
-  final ProductListResponse productResp;
+class CategoryState extends Equatable {
+  final CategoryListResponse categoryResp;
   final int total;
   final int page;
   final bool hasData;
-  final ProductStatus status;
+  final CategoryStatus status;
   final String message;
   final bool isLoading;
-  const ProductState({
-    this.productResp = const ProductListResponse(),
+  const CategoryState({
+    this.categoryResp = const CategoryListResponse(),
     this.isLoading = false,
     this.hasData = false,
-    this.status = ProductStatus.initial,
+    this.status = CategoryStatus.initial,
     this.message = '',
     this.page = 0,
     this.total = 0,
   });
 
-  const ProductState.initial({
-    this.productResp = const ProductListResponse(),
+  const CategoryState.initial({
+    this.categoryResp = const CategoryListResponse(),
     this.total = 0,
     this.page = 0,
     this.isLoading = false,
     this.hasData = false,
-    this.status = ProductStatus.initial,
+    this.status = CategoryStatus.initial,
     this.message = '',
   });
 
-  ProductState copyWith({
-    ProductListResponse? productResp,
+  CategoryState copyWith({
+    CategoryListResponse? categoryResp,
     int? total,
     int? page,
     bool? hasData,
-    ProductStatus? status,
+    CategoryStatus? status,
     String? message,
     bool? isLoading,
   }) {
-    return ProductState(
+    return CategoryState(
       isLoading: isLoading ?? this.isLoading,
-      productResp: productResp ?? this.productResp,
+      categoryResp: categoryResp ?? this.categoryResp,
       total: total ?? this.total,
       page: page ?? this.page,
       hasData: hasData ?? this.hasData,
@@ -65,5 +65,5 @@ class ProductState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [productResp, page, hasData, status, message];
+  List<Object?> get props => [categoryResp, page, hasData, status, message];
 }

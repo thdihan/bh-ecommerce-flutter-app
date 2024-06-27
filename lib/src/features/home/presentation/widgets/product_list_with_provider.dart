@@ -70,35 +70,50 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
             ))
           : state.hasData
               ? SizedBox(
-                  height: 600,
+                  // height: 600,
                   width: MediaQuery.of(context).size.width,
-                  child: ListView.separated(
-                    // shrinkWrap: true,
-                    itemBuilder: (ctx, i) {
-                      print(i);
-                      return ProductCard(
-                          news: state.productResp.data!.products![i]);
-                      // return ListTile(
-                      //   dense: false,
-                      //   visualDensity: VisualDensity.compact,
-                      //   contentPadding: const EdgeInsets.symmetric(
-                      //       vertical: 0, horizontal: 8),
-                      //   onTap: () async {
-                      //     print(state.productResp.data?.products?[i].name);
+                  child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.6,
+                      ),
+                      itemCount: state.productResp.data?.products?.length ?? 0,
+                      itemBuilder: (ctx, i) {
+                        print(i);
+                        return ProductCard(
+                            news: state.productResp.data!.products![i]);
+                      })
+                  // child: ListView.separated(
+                  //   // shrinkWrap: true,
+                  //   itemBuilder: (ctx, i) {
+                  //     print(i);
+                  //     return ProductCard(
+                  //         news: state.productResp.data!.products![i]);
+                  //     // return ListTile(
+                  //     //   dense: false,
+                  //     //   visualDensity: VisualDensity.compact,
+                  //     //   contentPadding: const EdgeInsets.symmetric(
+                  //     //       vertical: 0, horizontal: 8),
+                  //     //   onTap: () async {
+                  //     //     print(state.productResp.data?.products?[i].name);
 
-                      //     // print(GoRouterState.of(context).matchedLocation);
-                      //     // Navigator.of(ctx).pop();
-                      //   },
-                      //   trailing: const Icon(Icons.chevron_right_outlined),
-                      //   title: Text(
-                      //       state.productResp.data?.products?[i].name ?? ""),
-                      // );
-                    },
-                    separatorBuilder: (context, index) => const Divider(
-                      thickness: .05,
-                    ),
-                    itemCount: state.productResp.data?.products?.length ?? 0,
-                  ))
+                  //     //     // print(GoRouterState.of(context).matchedLocation);
+                  //     //     // Navigator.of(ctx).pop();
+                  //     //   },
+                  //     //   trailing: const Icon(Icons.chevron_right_outlined),
+                  //     //   title: Text(
+                  //     //       state.productResp.data?.products?[i].name ?? ""),
+                  //     // );
+                  //   },
+                  //   separatorBuilder: (context, index) => const Divider(
+                  //     thickness: .05,
+                  //   ),
+                  //   itemCount: state.productResp.data?.products?.length ?? 0,
+                  // )
+                  )
               : Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 22.0),
@@ -143,7 +158,13 @@ class ProductCard extends StatelessWidget {
               child: Image(
                 image: NetworkImage(news.image ?? ""),
                 errorBuilder: (context, error, stackTrace) {
-                  return Container();
+                  return Text(
+                    "No Image",
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                          color: Colors.red.shade200,
+                        ),
+                    textAlign: TextAlign.center,
+                  );
                 },
               ),
             ),
@@ -155,7 +176,7 @@ class ProductCard extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      (news.name ?? "").toUpperCase(),
+                      (news.categories?.firstOrNull ?? "").toUpperCase(),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -172,6 +193,8 @@ class ProductCard extends StatelessWidget {
             visualDensity: VisualDensity.standard,
             title: Text(
               news.name ?? "",
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge
@@ -181,10 +204,8 @@ class ProductCard extends StatelessWidget {
 
             subtitle: Text(
               news.description ?? "",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.black54, fontWeight: FontWeight.w600),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
