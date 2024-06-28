@@ -7,6 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../cart/domain/model/cart.dart';
+import '../../../cart/presentation/provider/cart_notifier.dart';
+import 'product_card.dart';
+
 class ProductListWidget extends ConsumerStatefulWidget {
   const ProductListWidget({super.key});
 
@@ -83,37 +87,26 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
                       itemCount: state.productResp.data?.products?.length ?? 0,
                       itemBuilder: (ctx, i) {
                         print(i);
-                        return ProductCard(
-                            news: state.productResp.data!.products![i]);
-                      })
-                  // child: ListView.separated(
-                  //   // shrinkWrap: true,
-                  //   itemBuilder: (ctx, i) {
-                  //     print(i);
-                  //     return ProductCard(
-                  //         news: state.productResp.data!.products![i]);
-                  //     // return ListTile(
-                  //     //   dense: false,
-                  //     //   visualDensity: VisualDensity.compact,
-                  //     //   contentPadding: const EdgeInsets.symmetric(
-                  //     //       vertical: 0, horizontal: 8),
-                  //     //   onTap: () async {
-                  //     //     print(state.productResp.data?.products?[i].name);
-
-                  //     //     // print(GoRouterState.of(context).matchedLocation);
-                  //     //     // Navigator.of(ctx).pop();
-                  //     //   },
-                  //     //   trailing: const Icon(Icons.chevron_right_outlined),
-                  //     //   title: Text(
-                  //     //       state.productResp.data?.products?[i].name ?? ""),
-                  //     // );
-                  //   },
-                  //   separatorBuilder: (context, index) => const Divider(
-                  //     thickness: .05,
-                  //   ),
-                  //   itemCount: state.productResp.data?.products?.length ?? 0,
-                  // )
-                  )
+                        return GestureDetector(
+                          onDoubleTap: () {
+                            final cartState = ref.watch(cartNotifierProvider);
+                            final cart = cartState.asData?.value;
+                            if (cart != null) {
+                              ref.read(cartNotifierProvider.notifier).addItem(
+                                  CartItem(
+                                      name: state.productResp.data?.products?[i]
+                                              .name ??
+                                          "",
+                                      price: state.productResp.data
+                                              ?.products?[i].price ??
+                                          0,
+                                      quantity: 1));
+                            }
+                          },
+                          child: ProductCard(
+                              product: state.productResp.data!.products![i]),
+                        );
+                      }))
               : Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 22.0),
@@ -136,82 +129,4 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
   //     ref.read(dashboardNotifierProvider.notifier).searchProducts(query);
   //   });
   // }
-}
-
-class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key,
-    required this.news,
-  });
-
-  final Product news;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12),
-      child: Column(
-        children: [
-          if (news.image?.isNotEmpty == true)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Image(
-                image: NetworkImage(news.image ?? ""),
-                errorBuilder: (context, error, stackTrace) {
-                  return Text(
-                    "No Image",
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                          color: Colors.red.shade200,
-                        ),
-                    textAlign: TextAlign.center,
-                  );
-                },
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, top: 8),
-            child: DefaultTextStyle(
-              style: const TextStyle(color: Colors.red),
-              child: Row(
-                children: [
-                  Flexible(
-                    child: Text(
-                      (news.categories?.firstOrNull ?? "").toUpperCase(),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold, color: Colors.red),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          ListTile(
-            isThreeLine: true,
-            dense: false,
-            visualDensity: VisualDensity.standard,
-            title: Text(
-              news.name ?? "",
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            // horizontalTitleGap: 8,
-
-            subtitle: Text(
-              news.description ?? "",
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.black54, fontWeight: FontWeight.w600),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
