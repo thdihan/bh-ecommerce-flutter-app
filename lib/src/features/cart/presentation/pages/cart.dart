@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/model/cart.dart';
+import '../../domain/model/cart.dart';
 import '../provider/cart_notifier.dart';
 
 class CartPage extends ConsumerWidget {
@@ -25,7 +25,7 @@ class CartPage extends ConsumerWidget {
             );
           },
         ),
-        loading: () => Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text('Error: $error')),
       ),
       floatingActionButton: FloatingActionButton(

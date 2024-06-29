@@ -1,10 +1,13 @@
+import 'package:batter_high/src/features/cart/presentation/provider/cart_notifier.dart';
 import 'package:batter_high/src/features/home/presentation/widgets/product_list_with_provider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../widgets/category_list.dart';
 import '../widgets/custom_title.dart';
+import '../widgets/slider_widgets.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -50,17 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              child: Badge(
-                label: Text('0'),
-                child: Icon(
-                  Icons.shopping_cart,
-                ),
-              ),
-            ),
-          ),
+          CartIcon(),
         ],
       ),
       body: CustomScrollView(
@@ -76,9 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: CategoryList(categoryList: categoryList),
             ),
           ),
-          // const SliverToBoxAdapter(
-          //   child: SliderWidgets(),
-          // ),
+          const SliverToBoxAdapter(
+            child: SliderWidgets(),
+          ),
           const SliverToBoxAdapter(
             child: CustomTitle(
               title: "Products",
@@ -86,6 +79,30 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const SliverToBoxAdapter(child: ProductListWidget())
         ],
+      ),
+    );
+  }
+}
+
+class CartIcon extends ConsumerWidget {
+  const CartIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartNotifierProvider);
+    final cart = cartState.asData?.value;
+
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        child: Badge(
+          label: Text(cart?.items.length.toString() ?? "0"),
+          child: Icon(
+            Icons.shopping_cart,
+          ),
+        ),
       ),
     );
   }

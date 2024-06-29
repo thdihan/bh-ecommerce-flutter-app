@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../domain/model/cart.dart';
+import '../../domain/model/cart.dart';
 
 final cartRepositoryProvider = Provider<CartRepository>((ref) {
   return CartRepositoryImpl();
@@ -17,14 +17,14 @@ class CartRepositoryImpl implements CartRepository {
   @override
   Future<Cart> getCart() async {
     // Simulate network or database delay
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     return _cart;
   }
 
   @override
   Future<void> saveCart(Cart cart) async {
     // Simulate network or database delay
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     _cart = cart;
   }
 }

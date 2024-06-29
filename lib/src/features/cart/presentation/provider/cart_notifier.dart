@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-import '../../../domain/model/cart.dart';
+import '../../domain/model/cart.dart';
 import '../../data/repository/cart_repository.dart';
 
 final cartNotifierProvider = StateNotifierProvider<CartNotifier, AsyncValue<Cart>>((ref) {

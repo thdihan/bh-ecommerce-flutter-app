@@ -6,6 +6,9 @@ import 'package:batter_high/src/features/home/presentation/providers/product/sta
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../cart/presentation/provider/cart_notifier.dart';
+import '../../../cart/domain/model/cart.dart';
+
 class ProductListWidget extends ConsumerStatefulWidget {
   const ProductListWidget({super.key});
 
@@ -68,36 +71,61 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
               backgroundColor: Colors.white,
             ))
           : state.hasData
-              ? SizedBox(
-                  height: 600,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.separated(
-                    // shrinkWrap: true,
-                    itemBuilder: (ctx, i) {
-                      print(i);
-                      return ProductCard(
-                          news: state.productResp.data!.products![i]);
-                      // return ListTile(
-                      //   dense: false,
-                      //   visualDensity: VisualDensity.compact,
-                      //   contentPadding: const EdgeInsets.symmetric(
-                      //       vertical: 0, horizontal: 8),
-                      //   onTap: () async {
-                      //     print(state.productResp.data?.products?[i].name);
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: state.productResp.data?.products?.length ?? 0,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300.0,
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 10.0,
+                    childAspectRatio: 0.65,
+                  ),
+                  // shrinkWrap: true,
+                  // physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int i) {
+                    print(i);
+                    return GestureDetector(
+                      onDoubleTap: () {
+                        final cartState = ref.watch(cartNotifierProvider);
+                        final cart = cartState.asData?.value;
+                        if (cart != null) {
+                          ref.read(cartNotifierProvider.notifier).addItem(
+                              CartItem(
+                                  name: state.productResp.data?.products?[i]
+                                          .name ??
+                                      "",
+                                  price: state.productResp.data?.products?[i]
+                                          .price ??
+                                      0,
+                                  quantity: 1));
+                        }
+                      },
+                      child: ProductCard(
+                          news: state.productResp.data!.products![i]),
+                    );
+                    // return ListTile(
+                    //   dense: false,
+                    //   visualDensity: VisualDensity.compact,
+                    //   contentPadding: const EdgeInsets.symmetric(
+                    //       vertical: 0, horizontal: 8),
+                    //   onTap: () async {
+                    //     print(state.productResp.data?.products?[i].name);
 
-                      //     // print(GoRouterState.of(context).matchedLocation);
-                      //     // Navigator.of(ctx).pop();
-                      //   },
-                      //   trailing: const Icon(Icons.chevron_right_outlined),
-                      //   title: Text(
-                      //       state.productResp.data?.products?[i].name ?? ""),
-                      // );
-                    },
-                    separatorBuilder: (context, index) => const Divider(
-                      thickness: .05,
-                    ),
-                    itemCount: state.productResp.data?.products?.length ?? 0,
-                  ))
+                    //     // print(GoRouterState.of(context).matchedLocation);
+                    //     // Navigator.of(ctx).pop();
+                    //   },
+                    //   trailing: const Icon(Icons.chevron_right_outlined),
+                    //   title: Text(
+                    //       state.productResp.data?.products?[i].name ?? ""),
+                    // );
+                  },
+
+                  // separatorBuilder: (context, index) => const Divider(
+                  //   thickness: .05,
+                  // ),
+                  // itemCount: state.productResp.data?.products?.length ?? 0,
+                )
               : Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 22.0),
@@ -137,13 +165,30 @@ class ProductCard extends StatelessWidget {
       child: Column(
         children: [
           if (news.image?.isNotEmpty == true)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Image(
-                image: NetworkImage(news.image ?? ""),
-                errorBuilder: (context, error, stackTrace) {
-                  return Container();
-                },
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Image(
+                  image: NetworkImage(news.image ?? ""),
+                  errorBuilder: (context, error, stackTrace) {
+                    return Center(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.grey.shade100),
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Text(
+                            "No\nImage",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(color: Colors.black12),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           Padding(
@@ -154,7 +199,7 @@ class ProductCard extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      (news.name ?? "").toUpperCase(),
+                      (news.categories?.firstOrNull ?? "").toUpperCase(),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -171,6 +216,8 @@ class ProductCard extends StatelessWidget {
             visualDensity: VisualDensity.standard,
             title: Text(
               news.name ?? "",
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge
@@ -180,10 +227,8 @@ class ProductCard extends StatelessWidget {
 
             subtitle: Text(
               news.description ?? "",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall
-                  ?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.black38, fontWeight: FontWeight.w600),
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
