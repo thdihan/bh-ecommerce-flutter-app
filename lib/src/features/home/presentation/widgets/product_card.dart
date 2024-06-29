@@ -102,22 +102,10 @@ class ProductCard extends ConsumerWidget {
                 final cartState = ref.watch(cartNotifierProvider);
                 final cart = cartState.asData?.value;
                 if (cart != null) {
-                  // check if product is already in cart
-                  final CartItem? cartItem = cart.items
-                      .firstWhere((element) => element.name == product.name);
-
-                  if (cartItem == null) {
-                    ref.read(cartNotifierProvider.notifier).addItem(CartItem(
-                        name: product.name ?? "",
-                        price: product.price ?? 0,
-                        quantity: 1));
-                  } else {
-                    // if in cart just increase the quantity
-                    ref.read(cartNotifierProvider.notifier).updateItem(CartItem(
-                        name: product.name ?? "",
-                        price: product.price ?? 0,
-                        quantity: cartItem.quantity + 1));
-                  }
+                  ref.read(cartNotifierProvider.notifier).addItem(CartItem(
+                      name: product.name ?? "",
+                      price: product.price ?? 0,
+                      quantity: 1));
                 }
               },
             ),

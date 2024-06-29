@@ -28,9 +28,29 @@ class CartNotifier extends StateNotifier<AsyncValue<Cart>> {
   Future<void> addItem(CartItem item) async {
     if (state is AsyncData<Cart>) {
       final cart = state.asData!.value;
-      final updatedCart = cart.copyWith(items: [...cart.items, item]);
-      state = AsyncData(updatedCart);
-      await _repository.saveCart(updatedCart);
+      bool isAvailable = cart.items.contains(item);
+      // final updatedCart = cart.copyWith(items: [...cart.items, item]);
+      if (!isAvailable) {
+        final updatedCart = cart.copyWith(
+          items: [...cart.items, item],
+        );
+        state = AsyncData(updatedCart);
+        await _repository.saveCart(updatedCart);
+      } else {
+        final updatedCart = cart.copyWith(
+          items: cart.items
+              .map((e) => e.name == item.name
+                  ? CartItem(
+                      name: item.name,
+                      price: item.price,
+                      quantity: e.quantity + 1,
+                    )
+                  : e)
+              .toList(),
+        );
+        state = AsyncData(updatedCart);
+        await _repository.saveCart(updatedCart);
+      }
     }
   }
 
