@@ -14,4 +14,10 @@ class ProductRepositoryImpl extends ProductRepository {
       {String local = "en", required String category}) {
     return productDataSource.fetchProducts(local: local, category: category);
   }
+  
+  @override
+  Future<Either<AppException, ProductResponse>> fetchProductById({String local = "en", required int id}) {
+    
+    return productDataSource.fetchProductById(local: local, id: id);
+  }
 }

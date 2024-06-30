@@ -88,21 +88,21 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
                       itemBuilder: (ctx, i) {
                         print(i);
                         return GestureDetector(
-                          onDoubleTap: () {
-                            final cartState = ref.watch(cartNotifierProvider);
-                            final cart = cartState.asData?.value;
-                            if (cart != null) {
-                              ref.read(cartNotifierProvider.notifier).addItem(
-                                  CartItem(
-                                      name: state.productResp.data?.products?[i]
-                                              .name ??
-                                          "",
-                                      price: state.productResp.data
-                                              ?.products?[i].price ??
-                                          0,
-                                      quantity: 1));
-                            }
-                          },
+                          // onDoubleTap: () {
+                          //   final cartState = ref.watch(cartNotifierProvider);
+                          //   final cart = cartState.asData?.value;
+                          //   if (cart != null) {
+                          //     ref.read(cartNotifierProvider.notifier).addItem(
+                          //         CartItem(
+                          //             name: state.productResp.data?.products?[i]
+                          //                     .name ??
+                          //                 "",
+                          //             price: state.productResp.data
+                          //                     ?.products?[i].price ??
+                          //                 0,
+                          //             quantity: 1));
+                          //   }
+                          // },
                           child: ProductCard(
                               product: state.productResp.data!.products![i]),
                         );
