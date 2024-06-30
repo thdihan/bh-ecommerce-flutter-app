@@ -1,5 +1,6 @@
 import 'package:batter_high/src/features/cart/presentation/pages/cart.dart';
 import 'package:batter_high/src/features/home/presentation/pages/home.dart';
+import 'package:batter_high/src/features/home/presentation/pages/product_details_page.dart';
 import 'package:batter_high/src/features/settings/presentation/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -58,5 +59,15 @@ final GoRouter router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      path: "/products/:id",
+      builder: (context, state) {
+        final id = state.pathParameters["id"];
+
+        return ProductDetailsPage(
+          id: id ?? "",
+        );
+      },
+    )
   ],
 );

@@ -7,28 +7,28 @@ part 'data.g.dart';
 
 @JsonSerializable()
 class Data extends Equatable {
-	final int? count;
-	final List<Category>? categories;
+  final int? count;
+  final List<Category>? categories;
 
-	const Data({this.count, this.categories});
+  const Data({this.count, this.categories});
 
-	factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
+  factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
 
-	Map<String, dynamic> toJson() => _$DataToJson(this);
+  Map<String, dynamic> toJson() => _$DataToJson(this);
 
-	Data copyWith({
-		int? count,
-		List<Category>? categories,
-	}) {
-		return Data(
-			count: count ?? this.count,
-			categories: categories ?? this.categories,
-		);
-	}
+  Data copyWith({
+    int? count,
+    List<Category>? categories,
+  }) {
+    return Data(
+      count: count ?? this.count,
+      categories: categories ?? this.categories,
+    );
+  }
 
-	@override
-	bool get stringify => true;
+  @override
+  bool get stringify => true;
 
-	@override
-	List<Object?> get props => [count, categories];
+  @override
+  List<Object?> get props => [count, categories];
 }

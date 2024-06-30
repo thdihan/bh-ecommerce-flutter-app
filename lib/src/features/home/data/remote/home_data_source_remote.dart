@@ -8,13 +8,11 @@ import '../../../../core/shared/domain/models/either.dart';
 import '../../../../core/shared/domain/models/product_response.dart';
 import '../../../../core/shared/exceptions/app_exceptions.dart';
 
-
-
 abstract class ProductDataSource {
   Future<Either<AppException, ProductResponse>> fetchProducts(
       {String local = "en", required String category});
   Future<Either<AppException, ProductResponse>> fetchProductById(
-      {String local = "en", required int id});
+      {String local = "en", required String id});
   // Future<Either<AppException, PaginatedResponse>> searchPaginatedProducts(
   //     {required int skip, required String query});
 }
@@ -53,9 +51,10 @@ class ProductRemoteDataSource extends ProductDataSource {
       },
     );
   }
-  
+
   @override
-  Future<Either<AppException, ProductResponse>> fetchProductById({String local = "en", required int id}) async {
+  Future<Either<AppException, ProductResponse>> fetchProductById(
+      {String local = "en", required String id}) async {
     final response = await networkService.get(
       'products/get-product-by-product-code/$id',
     );
@@ -83,36 +82,37 @@ class ProductRemoteDataSource extends ProductDataSource {
       },
     );
 
-  // @override
-  // Future<Either<AppException, PaginatedResponse>> searchPaginatedProducts(
-  //     {required int skip, required String query}) async {
-  //   final response = await networkService.get(
-  //     '/products/search?q=$query',
-  //     queryParameters: {
-  //       'skip': skip,
-  //       'limit': PRODUCTS_PER_PAGE,
-  //     },
-  //   );
+    // @override
+    // Future<Either<AppException, PaginatedResponse>> searchPaginatedProducts(
+    //     {required int skip, required String query}) async {
+    //   final response = await networkService.get(
+    //     '/products/search?q=$query',
+    //     queryParameters: {
+    //       'skip': skip,
+    //       'limit': PRODUCTS_PER_PAGE,
+    //     },
+    //   );
 
-  //   return response.fold(
-  //     (l) => Left(l),
-  //     (r) {
-  //       final jsonData = r.data;
-  //       if (jsonData == null) {
-  //         return Left(
-  //           AppException(
-  //             identifier: 'search PaginatedData',
-  //             statusCode: 0,
-  //             message: 'The data is not in the valid format.',
-  //           ),
-  //         );
-  //       }
-  //       final paginatedResponse =
-  //           PaginatedResponse.fromJson(jsonData, jsonData['products'] ?? []);
-  //       return Right(paginatedResponse);
-  //     },
-  //   );
-  // }
+    //   return response.fold(
+    //     (l) => Left(l),
+    //     (r) {
+    //       final jsonData = r.data;
+    //       if (jsonData == null) {
+    //         return Left(
+    //           AppException(
+    //             identifier: 'search PaginatedData',
+    //             statusCode: 0,
+    //             message: 'The data is not in the valid format.',
+    //           ),
+    //         );
+    //       }
+    //       final paginatedResponse =
+    //           PaginatedResponse.fromJson(jsonData, jsonData['products'] ?? []);
+    //       return Right(paginatedResponse);
+    //     },
+    //   );
+    // }
+  }
 }
 
 abstract class CategoryDataSource {

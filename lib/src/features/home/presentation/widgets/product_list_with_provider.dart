@@ -88,6 +88,10 @@ class _DashboardScreenState extends ConsumerState<ProductListWidget> {
                       itemBuilder: (ctx, i) {
                         print(i);
                         return GestureDetector(
+                          onTap: () {
+                            context.push(
+                                "/products/${state.productResp.data?.products?[i].productCode}");
+                          },
                           // onDoubleTap: () {
                           //   final cartState = ref.watch(cartNotifierProvider);
                           //   final cart = cartState.asData?.value;

@@ -3,35 +3,35 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'data.dart';
 
-part 'category_list_response.g.dart';
+part 'product_details_response.g.dart';
 
 @JsonSerializable()
-class CategoryListResponse extends Equatable {
+class ProductDetailsResponse extends Equatable {
   final bool? success;
   final int? statusCode;
   final String? message;
   final Data? data;
 
-  const CategoryListResponse({
+  const ProductDetailsResponse({
     this.success,
     this.statusCode,
     this.message,
     this.data,
   });
 
-  factory CategoryListResponse.fromJson(Map<String, dynamic> json) {
-    return _$CategoryListResponseFromJson(json);
+  factory ProductDetailsResponse.fromJson(Map<String, dynamic> json) {
+    return _$ProductDetailsResponseFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$CategoryListResponseToJson(this);
+  Map<String, dynamic> toJson() => _$ProductDetailsResponseToJson(this);
 
-  CategoryListResponse copyWith({
+  ProductDetailsResponse copyWith({
     bool? success,
     int? statusCode,
     String? message,
     Data? data,
   }) {
-    return CategoryListResponse(
+    return ProductDetailsResponse(
       success: success ?? this.success,
       statusCode: statusCode ?? this.statusCode,
       message: message ?? this.message,
